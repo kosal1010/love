@@ -1,0 +1,86 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom, #f18cb2, #a7c3f9, #88a4e9);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    margin-top: 300px;
+}
+
+.container {
+    text-align: center;
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid rgb(244, 176, 214);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(193, 96, 141, 0.1);
+}
+
+.photo {
+    margin-right: 50px;
+}
+
+.photo img {
+    width: 200px;
+    height: 90%;
+    border-radius: 10px;
+}
+
+.keypad {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.prompt {
+    font-size: 20px;
+    color: #4d78e6;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+.prompt h{
+    color: #e05f9b;
+}
+
+.display {
+    width: 120px;
+    height: 37px;
+    background: #f8a8c3;
+    border-radius: 15px;
+    margin: 25px auto 50px;
+    font-size: 24px;
+    line-height: 40px;
+    box-shadow: 0 0 1px;
+    letter-spacing: 5px;
+    font-weight: bold;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 60px);
+    gap: 15px;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.buttons button {
+    font-size: 20px;
+    padding: 2px;
+    border-radius: 15px;
+    background: white;
+    font-weight: bold;
+    color: rgba(16, 2, 2, 0.521);
+    /* cursor: pointer; */
+}
+.number{
+    color: #e05f9b;
+    font-weight: bold;
+}
+.buttons button:hover {
+    background: #ffdaec;
+}

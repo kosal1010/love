@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Love Forever</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+    
+<body>
+    <div class="container">
+        <div class="photo">
+            <img src="./img/cute.png" alt="Mirror selfie">
+        </div>
+        <div class="keypad">
+            <div class="prompt">Enter password
+                <h>❁´◡`❁</h>
+            </div>
+            <div class="display" id="passwordDisplay"></div>
+            <div class="buttons">
+                <button onclick="addDigit('1')" style="border: 1px solid;">
+                    <div class="number">1</div>
+                </button>
+                <button onclick="addDigit('2')" style="border: 1px solid;">
+                    <div class="number">2</div>
+                </button>
+                <button onclick="addDigit('3')" style="border: 1px solid;">
+                    <div class="number">3</div>
+                </button>
+                <button onclick="addDigit('4')" style="border: 1px solid;">
+                    <div class="number">4</div>
+                </button>
+                <button onclick="addDigit('5')" style="border: 1px solid;">
+                    <div class="number">5</div>
+                </button>
+                <button onclick="addDigit('6')" style="border: 1px solid;">
+                    <div class="number">6</div>
+                </button>
+                <button onclick="addDigit('7')" style="border: 1px solid;">
+                    <div class="number">7</div>
+                </button>
+                <button onclick="addDigit('8')" style="border: 1px solid;">
+                    <div class="number">8</div>
+                </button>
+                <button onclick="addDigit('9')" style="border: 1px solid;">
+                    <div class="number">9</div>
+                </button>
+                <button onclick="addDigit('*')" style="border: 1px solid;">
+                    <div class="number">*</div>
+                </button>
+                <button onclick="addDigit('0')" style="border: 1px solid;">
+                    <div class="number">0</div>
+                </button>
+                <button onclick="addDigit('#')" style="border: 1px solid;">
+                    <div class="number">#</div>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    let password = "";
+    const correctPassword = "2725";
+    function addDigit(char) {
+        if (char === '*' || char === '#') {
+            password = password.slice(0, -1); // Remove last digit
+        } else if (password.length < 4) {
+            password += char;
+        }
+        document.getElementById("passwordDisplay").innerText = '*'.repeat(password.length);
+
+        if (password.length === 4) {
+            if (password === correctPassword) {
+                window.location.href = 'love1.html'; // Redirect to next page
+            } else {
+                alert('Incorrect password!');
+                password = '';
+                document.getElementById("passwordDisplay").innerText = '';
+            }
+        }
+    }
+</script>
+
+</html>
