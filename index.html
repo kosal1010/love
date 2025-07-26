@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Forever</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:wght@400;700;900&family=Trirong&display=swap" rel="stylesheet">
+    <style>
+        /* General Body Styles (Applied to all pages) */
+        body {
+            font-family: 'Open Sans', sans-serif; /* Default font for the entire app */
+            background: linear-gradient(to bottom, #f18cb2, #a7c3f9, #88a4e9);
+            margin: 0;
+            display: flex;
+            flex-direction: column; /* Allow content to stack vertically */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+            padding: 20px; /* Add some padding around the main content */
+            box-sizing: border-box; /* Include padding in element's total width and height */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            /* Re-introducing a top padding to simulate original margin-top effect, while maintaining responsiveness */
+            /* padding-top: 0; Adjusted to give space from top, closer to original */
+        }
+
+        /* Common Container Styles */
+        .container {
+            text-align: center;
+            width: 90%; /* Responsive width */
+            /* padding: 20px;
+            border-radius: 15px; */
+            /* box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); */
+            /* background-color: rgba(255, 255, 255, 0.9); Slightly transparent white background */
+            margin-bottom: 20px; /* Space between containers if multiple are displayed */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Page Specific Overrides for Container Max-Widths */
+        #page-password .container {
+            flex-direction: row; /* For side-by-side photo and keypad */
+            border: 2px solid rgb(244, 176, 214);
+            /* background: rgba(255, 255, 255, 0.95); */
+            max-width: 500px; /* Adjusted to match original width for password page */
+            padding: 30px;
+        }
+
+        #page-countdown .container {
+            /* background: rgba(255, 255, 255, 0.95); */
+            /* border: 2px solid #C71585; Pink border */
+            width: 1100px; /* Adjusted to match original width for countdown page */
+        }
+
+        #page-photos .container {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #DA70D6;  /* Purple-pink border */
+            max-width: 700px; /* Keeping previous max-width as no specific width was given for this page originally */
+        }
+
+        #page-letter .container {
+            /* background-color: rgba(255, 255, 255, 0.98); More opaque for text */
+            border: 2px solid rgb(244, 176, 214);
+            max-width: 500px; /* Adjusted to match original width for love letter page */
+            padding: 30px;
+        }
+
+        #page-final .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgb(245, 194, 223);
+            max-width: 600px; /* Keeping original width for final page */
+            height: auto; /* Adjust height based on content, original had fixed 200px */
+            padding: 20px;
+        }
+
+        /* Password Page Specific Styles */
+        .photo {
+            margin-right: 50px;
+            flex-shrink: 0; /* Prevent image from shrinking */
+        }
+
+        .photo img {
+            width: 200px;
+            height: auto; /* Maintain aspect ratio, original had height: 90% which can distort */
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .keypad {
+            text-align: center;
+            flex-grow: 1; /* Allow keypad to take available space */
+        }
+
+        .prompt {
+            font-size: 1.5em;
+            color: #4d78e6;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .prompt h {
+            color: #e05f9b;
+            font-size: 1.2em; /* Slightly larger emoji */
+            margin-left: 5px;
+        }
+
+        .display {
+            width: 120px;
+            height: 31px;
+            background: #f8a8c3;
+            border-radius: 20px;
+            margin: 25px auto 25px;
+            font-size: 1.8em;
+            line-height: 40px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2); /* Inner shadow for display */
+            letter-spacing: 0px;
+            font-weight: bold;
+            color: #fff; /* White text for display */
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 70px); /* Larger buttons */
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .buttons button {
+            font-size: 1.1em;
+            padding: 5px; /* More padding for better touch targets */
+            border-radius: 25px;
+            background: white;
+            font-weight: bold;
+            color: rgba(16, 2, 2, 0.521);
+            border: 1px solid #ffc0cb; /* Light pink border */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-in-out; /* Smooth transition for hover */
+            cursor: pointer;
+        }
+
+        .number {
+            color: #e05f9b;
+            font-weight: bold;
+        }
+
+        .buttons button:hover {
+            background: #ffdaec;
+            transform: translateY(-2px); /* Slight lift effect */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Countdown Page Specific Styles */
+        .question {
+            width: 300px; /* Responsive width */
+            /* max-width: 300px; */
+            font-size: 1em;
+            color: #C71585;
+            margin-bottom: 70px; /* More space */
+            padding: 1px 15px;
+            border: 2px solid #C71585;
+            border-radius: 25px;
+            display: inline-block;
+            font-weight: 700;
+            /* background-color: rgba(255, 255, 255, 0.7); Semi-transparent background */
+        }
+
+        .countdown {
+            font-size: 5em; /* Reverted to original 3.7em */
+            color: #a04ada;
+            margin-bottom: 10px;
+            font-weight: 1100; /* Reverted to original 1100 */
+            font-family: 'Roboto', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        .label {
+            font-size: 1em; /* Reverted to original 1em */
+            color: #5282db;
+            margin-bottom: 45px;
+        }
+
+        .labels span {
+            margin:60px; /* Reverted to original 40px */
+            color: #4682B4;
+            font-size: 1em;
+            font-family: 'Open Sans', sans-serif;
+            /* font-weight: bold; */
+        }
+
+        /* Photo Grid Page Specific Styles (Now a responsive 3-column grid) */
+        .title {
+            font-size: 2.5em;
+            color: #DA70D6;
+            margin-bottom: 30px;
+            font-family: 'Roboto', sans-serif;
+            font-weight: 900;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .photo-grid {
+            display: grid; /* Changed to grid for 3-column layout */
+            grid-template-columns: repeat(3, 1fr); /* Explicitly 3 columns for larger screens */
+            gap: 15px;
+            margin-bottom: 30px;
+            width: 100%;
+            justify-content: center; /* Center the grid items if they don't fill the row */
+        }
+
+        .photo-placeholder {
+            background-color: #fce4ec; /* Light pink background */
+            border-radius: 10px;
+            overflow: hidden;
+            /* Removed width and max-width to let grid control sizing */
+            aspect-ratio: 1 / 1; /* Keep images square */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-placeholder img:hover {
+            transform: scale(1.05); /* Zoom effect on hover */
+        }
+
+        .cartoon span img {
+            width: 150px; /* Larger cartoon image */
+            height: auto;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        /* Love Letter Page Specific Styles */
+        #page-letter .text-box {
+            font-weight: bold;
+            font-size: 2em;
+            color: rgb(247, 47, 207);
+            margin-bottom: 20px;
+            font-family: 'Trirong', serif;
+        }
+
+        #page-letter .text p {
+            font-size: 1.1em;
+            font-weight: normal; /* Make paragraph text normal weight */
+            color: rgb(123, 25, 42);
+            line-height: 1.6;
+            text-align: justify; /* Justify text for better readability */
+            padding: 0 10px;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        /* Final Page Specific Styles */
+        #page-final .box {
+            color: #FF69B4;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #page-final .text-box h3 {
+            font-weight: bold;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        #page-final .photo p img {
+            width: 130px; /* Adjusted to original 130px */
+            height: auto;
+            object-fit: cover;
+            margin: 0 10px; /* Space between images */
+            box-shadow: none;
+        }
+
+        /* Common Button Styles */
+        .next-btn {
+            background-color: #DA70D6;
+            color: rgb(17, 63, 138);
+            border: none;
+            padding: 7px 60px; /* Larger padding */
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 700;
+            font-family: 'Roboto', sans-serif;
+            margin-top: 30px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .next-btn:hover {
+            background-color: #5a6fe4;
+            transform: translateY(-3px); /* Lift effect */
+        }
+
+        /* Common Decorations */
+        .decorations, .hearts {
+            margin-top: 20px;
+            font-size: 2em; /* Larger emojis */
+            color: #FF69B4;
+            animation: pulse 1.5s infinite alternate; /* Subtle pulse animation */
+        }
+
+        /* Message Box for Alerts */
+        .message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            border: 2px solid #DA70D6;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            text-align: center;
+            font-family: 'Open Sans', sans-serif;
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.3s ease-out;
+            max-width: 90%;
+            width: 350px;
+        }
+
+        .message-box p {
+            font-size: 1.2em;
+            color: #C71585;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .message-box button {
+            background-color: #DA70D6;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .message-box button:hover {
+            background-color: #5a6fe4;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -60%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 100px; /* Adjust padding for smaller screens */
+            }
+            #page-password .container {
+                flex-direction: column; /* Stack photo and keypad on small screens */
+                padding: 20px;
+            }
+            .photo {
+                margin-right: 0;
+                margin-bottom: 20px; /* Add space below photo */
+            }
+            .photo img {
+                width: 150px; /* Smaller image on mobile */
+            }
+            .buttons {
+                grid-template-columns: repeat(3, 1fr); /* Make buttons fill width */
+                gap: 10px;
+            }
+            .buttons button {
+                font-size: 1.2em;
+                padding: 8px;
+            }
+            .prompt {
+                font-size: 1.3em;
+            }
+            .display {
+                width: 100px;
+                height: 35px;
+                font-size: 1.6em;
+                line-height: 35px;
+            }
+            .countdown {
+                font-size: 2.8em;
+            }
+            .labels span {
+                margin: 0 15px;
+                font-size: 0.9em;
+            }
+            .next-btn {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+            .title {
+                font-size: 2em;
+            }
+            /* Photo Grid on smaller screens: 2 columns if space allows, then 1 */
+            #page-photos .photo-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+                /* object-fit: cover; */
+            }
+            #page-letter .text-box {
+                font-size: 1.5em;
+            }
+            #page-letter .text p {
+                font-size: 0.95em;
+            }
+            #page-final .text-box h3 {
+                font-size: 1.5em;
+            }
+            #page-final .photo p img {
+                width: 90px;
+                margin: 0 5px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding-top: 50px; /* Further adjust padding for very small screens */
+            }
+            .container {
+                padding: 15px;
+            }
+            .photo img {
+                width: 120px;
+            }
+            .buttons {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            .buttons button {
+                font-size: 1em;
+            }
+            .display {
+                width: 80px;
+                font-size: 1.4em;
+            }
+            .countdown {
+                font-size: 2.2em;
+            }
+            .labels span {
+                margin: 0 10px;
+                font-size: 0.8em;
+            }
+            .next-btn {
+                padding: 7px 60px;
+                font-size: 1.2em;
+            }
+            .title {
+                font-size: 1.2em;
+            }
+            /* Photo Grid on very small screens: 1 column */
+            #page-photos .photo-grid {
+                grid-template-columns: 0.1fr;
+            }
+            #page-letter .text-box {
+                font-size: 1.3em;
+            }
+            #page-letter .text p {
+                font-size: 0.9em;
+            }
+            #page-final .text-box h3 {
+                font-size: 1.3em;
+            }
+            #page-final .photo p img {
+                width: 70px;
+            }
+            .decorations, .hearts {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Message Box for Alerts -->
+    <div id="messageBox" class="message-box">
+        <p id="messageText"></p>
+        <button onclick="hideMessageBox()">OK</button>
+    </div>
+
+    <!-- Page 1: Password Entry -->
+    <div id="page-password" class="page">
+        <div class="container">
+            <div class="photo">
+                <!-- IMPORTANT: Replace placehold.co URLs with your actual image paths (e.g., './img/cute.png') -->
+                <img src="./img/cute.png" alt="Mirror selfie" onerror="this.onerror=null;this.src='https://placehold.co/200x300/f18cb2/ffffff?text=Image+Missing';">
+            </div>
+            <div class="keypad">
+                <div class="prompt ">Enter password <br><h>❁´◡`❁</h></div>
+                <div class="display" id="passwordDisplay" style="font-size: 20px;"></div>
+                <div class="buttons">
+                    <button onclick="addDigit('1')">
+                        <div class="number">1</div>
+                    </button>
+                    <button onclick="addDigit('2')">
+                        <div class="number">2</div>
+                    </button>
+                    <button onclick="addDigit('3')">
+                        <div class="number">3</div>
+                    </button>
+                    <button onclick="addDigit('4')">
+                        <div class="number">4</div>
+                    </button>
+                    <button onclick="addDigit('5')">
+                        <div class="number">5</div>
+                    </button>
+                    <button onclick="addDigit('6')">
+                        <div class="number">6</div>
+                    </button>
+                    <button onclick="addDigit('7')">
+                        <div class="number">7</div>
+                    </button>
+                    <button onclick="addDigit('8')">
+                        <div class="number">8</div>
+                    </button>
+                    <button onclick="addDigit('9')">
+                        <div class="number">9</div>
+                    </button>
+                    <button onclick="addDigit('*')">
+                        <div class="number">*</div>
+                    </button>
+                    <button onclick="addDigit('0')">
+                        <div class="number">0</div>
+                    </button>
+                    <button onclick="addDigit('#')">
+                        <div class="number">#</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Page 2: Countdown -->
+    <div id="page-countdown" class="page" style="display: none;">
+        <div class="container">
+            <div class="question">❁ do you love me</div>
+            <div class="countdown" id="countdown">
+                <header>61 : 01 : 26 : 37</header>
+            </div>
+            <div class="label">
+                <div class="labels">
+                    <span>Days</span>
+                    <span>Hrs</span>
+                    <span>Mins</span>
+                    <span>Secs</span>
+                </div>
+            </div>
+            <button class="next-btn" onclick="goToNextPage('page-photos')">Next</button>
+            <div class="hearts">🎀💝🎀💝</div>
+        </div>
+    </div>
+
+    <!-- Page 3: Photo Grid -->
+    <div id="page-photos" class="page " style="display: none;">
+        <div class="container">
+            <div class="title">Bbe I love you ♥</div>
+            <div class="photo-grid">
+                <div class="photo-placeholder">
+                    <!-- IMPORTANT: Replace placehold.co URLs with your actual image paths (e.g., './img/Cute Cartoon1.png') -->
+                    <img class="" src="./img/Cute Cartoon1.png" alt="Cute Cartoon 1" onerror="this.onerror=null;this.src='https://placehold.co/150x150/f18cb2/ffffff?text=Image+Missing';">
+                </div>
+                <div class="photo-placeholder">
+                    <img src="./img/photo-placeholder.png" alt="Photo Placeholder" onerror="this.onerror=null;this.src='https://placehold.co/150x150/a7c3f9/ffffff?text=Image+Missing';">
+                </div>
+                <div class="photo-placeholder">
+                    <img src="./img/angry.png" alt="Angry Emoji" onerror="this.onerror=null;this.src='https://placehold.co/150x150/88a4e9/ffffff?text=Image+Missing';">
+                </div>
+            </div>
+            <div class="cartoon">
+                <span>
+                    <img src="./img/Cute Cartoon.png" alt="Cute Cartoon" onerror="this.onerror=null;this.src='https://placehold.co/150x150/e05f9b/ffffff?text=Image+Missing';">
+                </span>
+            </div>
+            <button class="next-btn" onclick="goToNextPage('page-letter')">Next</button>
+            <div class="decorations">🎀 💕</div>
+        </div>
+    </div>
+
+    <!-- Page 4: Love Letter -->
+    <div id="page-letter" class="page" style="display: none;">
+        <div class="container">
+            <div class="text">
+                <div class="text-box">Sent to my love</div><br>
+                <p>
+                    In my life, there is nothing more wonderful than having you by my side as my soulmate. Every time I
+                    think about our love, my heart blooms into a beautiful flower, nourished by the light of your beauty and
+                    the warmth of your care. I don't wish for a better life, because having you is the greatest gift I could
+                    ever receive.
+                    <br><br>
+                    I love you not just because of how beautiful you are on the outside, but because of the goodness in your
+                    heart that makes me fall in love with you every single day. You light up my life like the moon in a dark
+                    night; you are the star that shines brightly in my heart. I promise I will stand by your side no matter
+                    what happens. My heart belongs to you, and whenever you need me, I'll be there — always.
+                </p>
+            </div>
+            <button class="next-btn" onclick="goToNextPage('page-final')">Next</button>
+        </div>
+    </div>
+
+    <!-- Page 5: Final Message & Images -->
+    <div id="page-final" class="page" style="display: none;">
+        <div class="container">
+            <div class="box">
+                <div class="text-box">
+                    <h3>I Love you so much</h3>
+                </div>
+                <div class="photo">
+                    <p>
+                        <!-- IMPORTANT: Replace placehold.co URLs with your actual image paths (e.g., './img/bad-girl.png') -->
+                        <img src="./img/bad-girl.png" alt="Bad Girl" onerror="this.onerror=null;this.src='https://placehold.co/120x120/f18cb2/ffffff?text=Image+Missing';">
+                        <img src="./img/Cute Cartoon.png" alt="Cute Cartoon" onerror="this.onerror=null;this.src='https://placehold.co/120x120/a7c3f9/ffffff?text=Image+Missing';">
+                        <img src="./img/1cute.png" alt="Another Cute" onerror="this.onerror=null;this.src='https://placehold.co/120x120/88a4e9/ffffff?text=Image+Missing';">
+                    </p>
+                </div>
+            </div>
+            <button class="next-btn" onclick="goToNextPage('page-password')">Start Over</button>
+        </div>
+    </div>
+
+    <script>
+        let currentTimer = null; // To store the interval ID for the countdown timer
+
+        /**
+         * Shows a specific page and hides all other pages.
+         * Manages the countdown timer's lifecycle (start/stop).
+         * Resets the password input when navigating away from the password page.
+         * @param {string} pageId - The ID of the page to display.
+         */
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.style.display = 'none'; // Hide all pages
+            });
+
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.style.display = 'flex'; // Show the target page (using flex for centering)
+            }
+
+            // Specific logic for countdown page: start/reset timer
+            if (pageId === 'page-countdown') {
+                // Clear any existing timer to prevent multiple timers running
+                if (currentTimer) {
+                    clearInterval(currentTimer);
+                }
+                // Reset countdown time to initial values when entering this page
+                timeLeft = { days: 61, hours: 1, minutes: 25, seconds: 23 };
+                updateCountdown(); // Initial update to display correct starting time
+                currentTimer = setInterval(updateCountdown, 1000); // Start new timer
+            } else {
+                // If navigating away from countdown page, clear its timer
+                if (currentTimer) {
+                    clearInterval(currentTimer);
+                    currentTimer = null;
+                }
+            }
+
+            // Reset password input when navigating away from the password page
+            if (pageId !== 'page-password') {
+                password = '';
+                document.getElementById("passwordDisplay").innerText = '';
+            }
+        }
+
+        // --- Password Page Logic ---
+        let password = "";
+        const correctPassword = "2725"; // The correct password for entry
+
+        /**
+         * Adds a digit to the password string or handles special characters.
+         * Updates the display and checks for password correctness.
+         * @param {string} char - The character (digit, '*', or '#') pressed on the keypad.
+         */
+        function addDigit(char) {
+            if (char === '*') { // Backspace functionality
+                password = password.slice(0, -1);
+            } else if (char === '#') {
+                // Currently, '#' has no specific action, but could be used for 'Enter' or 'Clear'
+                // For this app, it simply does nothing as per original behavior.
+            } else if (password.length < 4) { // Limit password length to 4 digits
+                password += char;
+            }
+            // Update the display with asterisks for each entered digit
+            document.getElementById("passwordDisplay").innerText = '*'.repeat(password.length);
+
+            // Check password only when 4 digits are entered
+            if (password.length === 4) {
+                if (password === correctPassword) {
+                    showMessageBox('Correct password! Redirecting...', () => {
+                        showPage('page-countdown'); // Go to the next page on success
+                    });
+                } else {
+                    showMessageBox('Incorrect password! Please try again.', () => {
+                        password = ''; // Clear password on incorrect attempt
+                        document.getElementById("passwordDisplay").innerText = ''; // Clear display
+                    });
+                }
+            }
+        }
+
+        // --- Custom Message Box Logic (replaces browser's alert/confirm) ---
+        /**
+         * Displays a custom message box with a message and an OK button.
+         * Executes a callback function when the OK button is clicked.
+         * @param {string} message - The message to display in the box.
+         * @param {function} callback - Function to execute after the message box is closed.
+         */
+        function showMessageBox(message, callback) {
+            const messageBox = document.getElementById('messageBox');
+            const messageText = document.getElementById('messageText');
+            messageText.innerText = message;
+            messageBox.style.display = 'block'; // Show the message box
+
+            // Set the onclick for the OK button to hide the box and run the callback
+            messageBox.querySelector('button').onclick = () => {
+                hideMessageBox();
+                if (callback && typeof callback === 'function') {
+                    callback();
+                }
+            };
+        }
+
+        /**
+         * Hides the custom message box.
+         */
+        function hideMessageBox() {
+            document.getElementById('messageBox').style.display = 'none';
+        }
+
+
+        // --- Countdown Page Logic (Modified to be an incrementing timer) ---
+        let timeLeft = {
+            days: 61,
+            hours: 1,
+            minutes: 25,
+            seconds: 23,
+        };
+
+        /**
+         * Updates the incrementing timer display.
+         * This function simulates time passing forward (e.g., "time since an event").
+         */
+        function updateCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            let { days, hours, minutes, seconds } = timeLeft;
+
+            seconds++; // Increment seconds
+            if (seconds >= 60) {
+                seconds = 0;
+                minutes++;
+            }
+            if (minutes >= 60) {
+                minutes = 0;
+                hours++;
+            }
+            if (hours >= 24) {
+                hours = 0;
+                days++;
+            }
+
+            timeLeft = { days, hours, minutes, seconds };
+            // Corrected padStart to ensure two-digit display (e.g., 01, 05)
+            countdownElement.textContent = `${days.toString().padStart(2, '0')} : ${hours.toString().padStart(2, '0')} : ${minutes.toString().padStart(2, '0')} : ${seconds.toString().padStart(2, '0')}`;
+        }
+
+        /**
+         * Navigates to the specified next page.
+         * @param {string} nextPageId - The ID of the page to navigate to.
+         */
+        function goToNextPage(nextPageId) {
+            showPage(nextPageId);
+        }
+
+        // Initialize the first page when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage('page-password');
+        });
+    </script>
+</body>
+
+</html>
